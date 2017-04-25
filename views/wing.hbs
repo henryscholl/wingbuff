@@ -1,0 +1,163 @@
+<h1>{{ wing.wingName }}</h1>
+
+<h4><a href="/places/{{wing.placeId}}">{{ wing.placeName }}, {{ wing.placeLocation }}</a></h4>
+{{#if avgRating }}
+	<h4>Rating: <span class="badge">{{ avgRating }}</span></h4>
+{{/if}}
+
+<br>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
+  Add Review
+</button>
+
+<hr>
+
+{{#if reviews}}
+	<h3>Reviews:</h3>
+	{{# each reviews }}
+		<div class="well">
+			<p>{{ this.review }}</p>
+			<p><strong><span class="badge">Rating: {{ this.rating }}</span></strong></p>
+			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}" data-description="{{ this.review }}" data-rating="{{ this.rating }}">Edit</button>
+			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}">Delete</button>
+		</div>
+	{{/each}}
+{{else}}
+	<h3>No Reviews Yet</h3>
+{{/if}}
+
+<!-- Modal for new review -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    	<form method="POST" action="/places/{{wing.placeId}}/wings/{{wing.wingId}}/reviews">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="formModal">Add New Review for {{wing.wingName}}</h4>
+		      </div>
+		      <div class="modal-body">
+		         <div class="form-group">
+		         	<label for="description">Review</label>
+                    <input class="form-control" type="text" name="description" placeholder="Review" id="review" required>
+                </div>
+                <div class="form-group">
+                	<label for="rating">Rating</label>
+                	<br>
+                    <label class="radio-inline">
+				      <input type="radio" name="rating" value="1">1
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="2">2
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="3">3
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="4">4
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="5">5
+				    </label>
+                </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary">Save</button>
+		      </div>
+	    </form>  
+    </div>
+  </div>
+</div>
+
+<!-- Modal for editing review -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    	<form method="POST" action="#" id="editForm">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="editModalLabel">Edit Review for {{wing.wingName}}</h4>
+		      </div>
+		      <div class="modal-body">
+		         <div class="form-group">
+		         	<label for="description">Review</label>
+                    <input class="form-control" type="text" name="description" placeholder="Review" id="review" required>
+                </div>
+                <div class="form-group">
+                	<label for="rating">Rating</label>
+                	<br>
+                    <label class="radio-inline">
+				      <input type="radio" name="rating" value="1">1
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="2">2
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="3">3
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="4">4
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="rating" value="5">5
+				    </label>
+                </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary">Save</button>
+		      </div>
+	    </form>  
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete review modal -->
+<div class="modal fade bs-example-modal-sm" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    		<h4>Delete review?</h4>
+    	</div>
+    	<div class="modal-footer">
+    	  <form method="POST" action="#" id="deleteForm">
+		      <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+			  <button type="submit" class="btn btn-primary btn-sm">Delete</button>
+		  </form>
+		</div>  
+    </div>
+  </div>
+</div>
+
+<script>
+
+$('#editModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  // Extract info from data-* attributes
+  var placeId = button.data('place') 
+  var wingId = button.data('wing')
+  var reviewId = button.data('review')
+  var description = button.data('description')
+  var rating = button.data('rating')
+  // Update the modal's content. 
+  var modal = $(this)
+  modal.find('#review').val(description)
+  modal.find('input[name=rating][value=' + rating + ']').prop('checked', true);
+  // Set update link path for form
+  modal.find('#editForm').attr('action', '/places/'+ placeId +'/wings/'+ wingId +'/reviews/'+ reviewId +'?_method=PUT');
+});
+
+$('#deleteModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var placeId = button.data('place') 
+  var wingId = button.data('wing')
+  var reviewId = button.data('review')
+  // Set delete link path for form
+  var modal = $(this)
+  modal.find('#deleteForm').attr('action', '/places/'+ placeId +'/wings/'+ wingId +'/reviews/'+ reviewId +'?_method=DELETE');
+});
+
+</script>

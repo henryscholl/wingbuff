@@ -1,0 +1,25 @@
+{
+  "name": "wingbuff",
+  "version": "1.0.0",
+  "description": "Rate and discover the best wings in your city",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app"
+  },
+  "author": "Henry Scholl",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "knex": "^0.12.9",
+    "method-override": "^2.3.8",
+    "morgan": "^1.8.1",
+    "path": "^0.12.7",
+    "pg": "^6.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
