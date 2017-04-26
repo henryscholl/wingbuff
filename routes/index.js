@@ -4,9 +4,13 @@ const express = require('express'),
 
 // render home page and index all wings
 
-router.get('/', (req, res) => {
-	queries.getAllWings((result) => {
-		res.render('index', {title: 'Wingbuff', wings: result.rows});
+router.get('/', (req, res, next) => {
+	queries.getAllWings()
+	.then((result) => {
+		res.render('index', {title: 'Wingbuff', wings: result});
+	})
+	.catch((err) => {
+		next(err);
 	});
 });
 

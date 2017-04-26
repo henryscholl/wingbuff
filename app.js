@@ -5,6 +5,9 @@ const express = require('express'),
     methodOverride = require('method-override'),
 	  hbs = require('express-handlebars');
 
+// *** load environment variables *** //
+  require('dotenv').config();
+
 const indexRoutes = require('./routes/index');
 const wingRoutes = require('./routes/wings');
 const placeRoutes = require('./routes/places');
@@ -41,7 +44,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
 
 // development error handler
 // will print stacktrace

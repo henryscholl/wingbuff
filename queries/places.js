@@ -1,48 +1,31 @@
-const pool = require('../lib/db');
+const knex = require('../lib/connection.js');
 
 let queries = {};
 
 // index all places
-queries.getAllPlaces = function(callback) {
-	pool.query(`SELECT * FROM places;`, 
-				function(err, result) {
-					if(err) {
-						return console.error('error running query', err);
-					}
-					callback(result);
-				});
+queries.getAllPlaces = function() {
+	return knex.select().from('places');
 }
 
 // get place info and wings by id
-queries.getAllWingsByPlaceId = function(placeId, callback) {
-	pool.query(`SELECT wings.name AS "wingName", wings.id AS "wingId", 
-				places.name AS "placeName", places.location AS "location", places.id AS "placeId",
-				round(avg(reviews.rating), 1) AS "rating"
-				FROM places LEFT JOIN wings 
-				ON places.id = wings.placeid
-				LEFT JOIN reviews
-				ON wings.id = reviews.wing_id
-				WHERE places.id = ${placeId}
-				GROUP BY wings.id, places.name, places.location, places.id
-				ORDER BY avg(reviews.rating) DESC;`, 
-				function(err, result) {
-						if(err) {
-							return console.error('error running query', err);
-						}
-						callback(result);
-				});
+queries.getAllWingsByPlaceId = function(placeId) {
+	return knex.select(
+			'wings.name AS wingName', 'wings.id AS wingId', 
+		  	'places.name AS placeName', 
+		  	'places.location AS location', 
+		  	'places.id AS placeId',
+		  	knex.raw('round(avg(reviews.rating), 1) AS "rating"'))
+		.from('places')
+		.leftJoin('wings', 'places.id', 'wings.placeid')
+		.leftJoin('reviews', 'wings.id', 'reviews.wing_id')
+		.where('places.id', placeId)
+		.groupBy('wings.id', 'places.name', 'places.location', 'places.id')
+		.orderByRaw('avg(reviews.rating) DESC');
 }
 
 // create new place
-queries.createPlace = function(name, location, callback) {
-	pool.query(`INSERT INTO places(name, location) 
-				VALUES('${name}', '${location}') RETURNING id, name, location;`, 
-				function(err, result) {
-					if(err) {
-						return console.error('error running query', err);
-					}
-					callback(result);
-				});
+queries.createPlace = function(name, location) {
+	return knex.insert({name: name, location: location}, 'id').into('places');
 }
 
 // update place

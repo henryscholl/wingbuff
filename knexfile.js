@@ -1,44 +1,30 @@
-// Update with your config settings.
+const databaseName = 'wingbuff';
 
 module.exports = {
-
   development: {
-    client: 'sqlite3',
-    connection: {
-      filename: './dev.sqlite3'
-    }
-  },
-
-  staging: {
     client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+    connection: `postgres://localhost:5432/${databaseName}`
   },
-
-  production: {
+  test: {
     client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    connection: `postgres://localhost:5432/${databaseName}_test`,
     migrations: {
-      tableName: 'knex_migrations'
+      directory: __dirname + '/src/server/db/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/src/server/db/seeds'
     }
   }
-
 };
+
+/*
+var config = {
+  user: 'henry', //env var: PGUSER
+  database: 'wingbuff', //env var: PGDATABASE
+  password: 'pull3wah', //env var: PGPASSWORD
+  host: 'localhost', // Server hosting the postgres database
+  port: 5432, //env var: PGPORT
+  max: 10, // max number of clients in the pool
+  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+};
+*/

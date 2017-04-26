@@ -3,34 +3,42 @@ const express = require('express'),
 	  queries = require('../queries/wings');
 
 // show wing by id
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
 	let wingId = req.params.id;
-	queries.getWingAndReviewsById(wingId, (result) => {
-		let reviews = false;
-		let avgRating = false;
-		if (hasReviews(result)) {
-			reviews = result.rows;
-			avgRating = calculateAvgRating(reviews);
-		}
-		let wing = result.rows[0];
-		res.render('wing', {title: wing.wingName, wing: wing, reviews: reviews, avgRating: avgRating});
-	});
+	queries.getWingAndReviewsById(wingId)
+		.then((result) => {
+			let reviews = false;
+			let avgRating = false;
+			if (hasReviews(result)) {
+				reviews = result;
+				avgRating = calculateAvgRating(reviews);
+			}
+			let wing = result[0];
+			res.render('wing', {title: wing.wingName, wing: wing, reviews: reviews, avgRating: avgRating});
+		})	
+		.catch((err) => {
+			next(err);
+		});
 });
 
 // create new wing
 router.post('/', (req, res) => {
 	let wingName = req.body.name;
 	let placeId = req.params.placeId;
-	queries.createWing(wingName, placeId, (result) => {
-		let wing = result.rows[0];
-		res.redirect(`/places/${placeId}/wings/${wing.id}`);
+	queries.createWing(wingName, placeId)
+	.then((result) => {
+		let id = result;
+		res.redirect(`/places/${placeId}/wings/${id}`);
+	})
+	.catch((err) => {
+		next(err);
 	});
 });
 
 // helper functions
 
 function hasReviews(result) {
-	return result.rows[0].review != null;
+	return result[0].review != null;
 }
 
 function calculateAvgRating(reviews) {
