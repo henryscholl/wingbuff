@@ -1,30 +1,34 @@
-const databaseName = 'wingbuff';
+const databaseName = 'wbuff';
 
 module.exports = {
-  development: {
-    client: 'postgresql',
-    connection: `postgres://localhost:5432/${databaseName}`
-  },
   test: {
-    client: 'postgresql',
+    client: 'pg',
     connection: `postgres://localhost:5432/${databaseName}_test`,
     migrations: {
-      directory: __dirname + '/src/server/db/migrations'
+      directory: __dirname + '/db/migrations'
     },
     seeds: {
-      directory: __dirname + '/src/server/db/seeds'
+      directory: __dirname + '/db/seeds/test'
+    }
+  },
+  development: {
+    client: 'pg',
+    connection: `postgres://localhost:5432/${databaseName}`,
+    migrations: {
+      directory: __dirname + '/db/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/db/seeds/development'
+    }
+  },
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: __dirname + '/db/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/db/seeds/production'
     }
   }
 };
-
-/*
-var config = {
-  user: 'henry', //env var: PGUSER
-  database: 'wingbuff', //env var: PGDATABASE
-  password: 'pull3wah', //env var: PGPASSWORD
-  host: 'localhost', // Server hosting the postgres database
-  port: 5432, //env var: PGPORT
-  max: 10, // max number of clients in the pool
-  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
-};
-*/

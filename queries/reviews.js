@@ -11,7 +11,7 @@ queries.createReview = function(description, rating, wingId) {
 // update review
 queries.updateReview = function(description, rating, reviewId) {
 	return knex('reviews')
-			.where('review_id', reviewId)
+			.where('id', reviewId)
 			.update({
 				description: description,
 				rating: rating
@@ -21,7 +21,7 @@ queries.updateReview = function(description, rating, reviewId) {
 // delete review
 queries.deleteReview = function(reviewId) {
 	return knex('reviews')
-			.where('review_id', reviewId)
+			.where('id', reviewId)
 			.del()
 }
 

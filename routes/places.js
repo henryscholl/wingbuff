@@ -31,8 +31,11 @@ router.get('/:id', (req, res, next) => {
 // create new place
 router.post('/', (req, res, next) => {
 	let name = req.body.name;
-	let location = req.body.location;
-	queries.createPlace(name, location)
+	let address = req.body.address;
+	let city = req.body.city;
+	let state = req.body.state;
+	let zipcode = req.body.zipcode;
+	queries.createPlace(name, address, city, state, zipcode)
 	.then((result) => {
 		let placeId = result;
 		res.redirect('/places/' + placeId);

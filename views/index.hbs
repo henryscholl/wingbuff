@@ -5,7 +5,13 @@
 <div class="list-group">
 	{{# each wings }}
 		<a href="/places/{{ this.placeId }}/wings/{{ this.wingId }}" class="list-group-item">
-			<strong>{{ this.wingName }} <span class="badge">{{ this.rating }}</span></strong> - {{ this.place }}, {{ this.location }} 
+			<strong>{{ this.wingName }} 
+			{{# if this.rating }}
+				<span class="badge">{{ this.rating }}</span>
+			{{else}}
+				<span class="badge">New</span>
+			{{/if}}
+			</strong> - {{ this.place }}, {{ this.city }} {{ this.state }} 
 			
 		</a>
 	{{/each}}
