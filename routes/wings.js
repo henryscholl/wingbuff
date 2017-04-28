@@ -1,9 +1,10 @@
 const express = require('express'),
 	  router = express.Router({mergeParams: true}),
 	  queries = require('../queries/wings');
+	  helpers = require('../helpers/validation');
 
 // show wing by id
-router.get('/:id', (req, res, next) => {
+router.get('/:id', helpers.validateId, (req, res, next) => {
 	let wingId = req.params.id;
 	queries.getWingAndReviewsById(wingId)
 		.then((result) => {
@@ -22,7 +23,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // create new wing
-router.post('/', (req, res, next) => {
+router.post('/', helpers.validateWing, (req, res, next) => {
 	let wingName = req.body.name;
 	let placeId = req.params.placeId;
 	queries.createWing(wingName, placeId)
