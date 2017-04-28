@@ -1,4 +1,4 @@
-const knex = require('../lib/connection.js');
+const knex = require('../db/connection.js');
 
 let queries = {};
 

@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app');
-const knex = require('../lib/connection');
+const knex = require('../db/connection');
 
 const should = chai.should();
 
@@ -69,7 +69,7 @@ describe('API Routes', function() {
 
   });
 
-  describe('POST /places/:id/wings', function() {
+  describe('POST /places/:placeid/wings', function() {
 
   	it('should create new wing', function(done) {
 		chai.request(server)
@@ -101,7 +101,7 @@ describe('API Routes', function() {
 
   });
 
-  describe('Get all places', function() {
+  describe('GET /places', function() {
   	it('should return all places', function(done) {
 		chai.request(server)
 		.get('/places')

@@ -3,6 +3,8 @@ const express = require('express'),
 	  path = require('path'),
 	  bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
+    session = require('express-session'),
+    passport = require('passport'),
 	  hbs = require('express-handlebars');
 
 // *** load environment variables *** //
@@ -12,6 +14,7 @@ const indexRoutes = require('./routes/index');
 const wingRoutes = require('./routes/wings');
 const placeRoutes = require('./routes/places');
 const reviewRoutes = require('./routes/reviews');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -28,8 +31,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // routes
 app.use('/', indexRoutes);
+app.use('/auth', authRoutes);
 app.use('/places/:placeId/wings', wingRoutes);
 app.use('/places', placeRoutes);
 app.use('/places/:placeId/wings/:wingId/reviews', reviewRoutes);
