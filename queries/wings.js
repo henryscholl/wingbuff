@@ -28,7 +28,8 @@ queries.getWingAndReviewsById = function(wingId) {
 		  	'places.id AS placeId',
 		  	'reviews.description AS review',
 		  	'reviews.rating AS rating',
-		  	'reviews.id AS review_id')
+		  	'reviews.id AS review_id'
+		  	)
 		.from('wings')
 		.innerJoin('places', 'places.id', 'wings.place_id')
 		.leftJoin('reviews', 'wings.id', 'reviews.wing_id')
