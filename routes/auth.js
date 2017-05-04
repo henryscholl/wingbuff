@@ -9,10 +9,10 @@ router.post('/register', (req, res, next) => {
 	return authHelpers.createUser(req, res)
 	.then((response) => {
 		passport.authenticate('local', (err, user, info) => {
-			if (user) { handleResponse(res, 200, 'success'); }
+			if (user) { res.redirect('/'); }
     })(req, res, next);
   })
-  .catch((err) => { handleResponse(res, 500, 'error'); });
+  .catch((err) => { next(err); });
 });
 
 // login user
@@ -23,7 +23,8 @@ router.post('/login', (req, res, next) => {
 		if (user) {
 			req.logIn(user, function(err) {
 				if (err) { handleResponse(res, 500, 'error'); }
-				handleResponse(res, 200, 'success');
+				res.redirect('/user');
+				//handleResponse(res, 200, 'success');
 			});
 		}
 	})(req, res, next);
@@ -32,7 +33,7 @@ router.post('/login', (req, res, next) => {
 // logout
 router.get('/logout', (req, res, next) => {
 	req.logout();
-	handleResponse(res, 200, 'success');
+	res.redirect('/');
 });
 
 function handleResponse(res, code, statusMsg) {

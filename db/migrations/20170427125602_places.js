@@ -1,6 +1,13 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('places', function(table) {
+  return knex.schema.createTable('users', function(table) {
+    table.increments('id');
+    table.string('username').unique().notNullable();
+    table.string('password').notNullable();
+    table.boolean('admin').notNullable().defaultTo(false);
+    table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
+  })
+  .createTable('places', function(table) {
   	table.increments('id');
   	table.string('name').notNullable();
   	table.string('address').notNullable();
@@ -26,5 +33,6 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
   return knex.schema.dropTable('reviews')
   	.dropTable('wings')
-  	.dropTable('places');
+  	.dropTable('places')
+    .dropTable('users');
 };

@@ -1,8 +1,8 @@
-<h1>{{ wing.wingName }}</h1>
+<h1>{{wing.wingName}}</h1>
 
-<h4><a href="/places/{{wing.placeId}}">{{ wing.placeName }}, {{ wing.city }}, {{ wing.state }}</a></h4>
-{{#if avgRating }}
-	<h4>Rating: <span class="badge">{{ avgRating }}</span></h4>
+<h4><a href="/places/{{wing.placeId}}">{{wing.placeName}}, {{wing.city}}, {{wing.state}}</a></h4>
+{{#if avgRating}}
+	<h4>Rating: <span class="badge">{{avgRating}}</span></h4>
 {{/if}}
 
 <br>
@@ -15,11 +15,11 @@
 
 {{#if reviews}}
 	<h3>Reviews:</h3>
-	{{# each reviews }}
+	{{# each reviews}}
 		<div class="well">
-			<p>{{ this.review }}</p>
-			<p><strong><span class="badge">Rating: {{ this.rating }}</span></strong></p>
-			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}" data-description="{{ this.review }}" data-rating="{{ this.rating }}">Edit</button>
+			<p>{{this.review}}</p>
+			<p><strong><span class="badge">Rating: {{this.rating}}</span></strong></p>
+			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}" data-description="{{this.review}}" data-rating="{{this.rating}}">Edit</button>
 			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}">Delete</button>
 		</div>
 	{{/each}}

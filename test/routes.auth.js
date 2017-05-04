@@ -88,7 +88,34 @@ describe('Auth Routes', function() {
 				done();
 			});
 		});
+	});
 
+	describe('GET /user', () => {
+		it('should return a success', (done) => {
+			passportStub.login({
+				username: 'firstuser',
+				password: 'testpass'
+			});
+			chai.request(server)
+			.get('/user')
+			.end((err, res) => {
+				should.not.exist(err);
+				res.redirects.length.should.eql(0);
+				res.status.should.eql(200);
+				done();
+			});
+		});
+
+		it('should throw an error if user is not logged in', (done) => {
+			chai.request(server)
+			.get('/user')
+			.end((err, res) => {
+				should.exist(err);
+				res.redirects.length.should.eql(0);
+				res.status.should.eql(401);
+				done();
+			});
+		});
 	});
 
 });
