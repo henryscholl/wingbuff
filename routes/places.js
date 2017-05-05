@@ -1,6 +1,7 @@
 const express = require('express'),
 	  router = express.Router(),
-	  queries = require('../queries/places');
+	  queries = require('../queries/places'),
+	  authHelpers = require('../auth/_helpers');
 
 // index all places
 router.get('/', (req, res, next) => {
@@ -29,7 +30,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // create new place
-router.post('/', (req, res, next) => {
+router.post('/', authHelpers.loginRequired, (req, res, next) => {
 	let name = req.body.name;
 	let address = req.body.address;
 	let city = req.body.city;

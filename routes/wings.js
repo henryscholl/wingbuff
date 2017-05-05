@@ -2,6 +2,7 @@ const express = require('express'),
 	  router = express.Router({mergeParams: true}),
 	  queries = require('../queries/wings');
 	  helpers = require('../helpers/validation');
+	  authHelpers = require('../auth/_helpers');
 
 // show wing by id
 router.get('/:id', helpers.validateId, (req, res, next) => {
@@ -23,10 +24,11 @@ router.get('/:id', helpers.validateId, (req, res, next) => {
 });
 
 // create new wing
-router.post('/', helpers.validateWing, (req, res, next) => {
+router.post('/', authHelpers.loginRequired, (req, res, next) => {
 	let wingName = req.body.name;
 	let placeId = req.params.placeId;
-	queries.createWing(wingName, placeId)
+	let userId = req.user.id;
+	queries.createWing(wingName, placeId, userId)
 	.then((result) => {
 		let id = result;
 		res.redirect(`/places/${placeId}/wings/${id}`);

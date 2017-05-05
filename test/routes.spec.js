@@ -2,12 +2,16 @@ process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const passportStub = require('passport-stub');
 const server = require('../app');
 const knex = require('../db/connection');
 
 const should = chai.should();
+const expect = chai.expect;
 
 chai.use(chaiHttp);
+passportStub.install(server);
+
 
 describe('API Routes', function() {
 
@@ -72,6 +76,10 @@ describe('API Routes', function() {
   describe('POST /places/:placeid/wings', function() {
 
   	it('should create new wing', function(done) {
+		passportStub.login({
+			username: 'firstuser',
+			password: 'testpass'
+		});
 		chai.request(server)
 		.post('/places/1/wings')
 		.send({
@@ -85,19 +93,6 @@ describe('API Routes', function() {
 		});
 	});
 
-	it('should throw error for invalid wing creation', function(done) {
-		chai.request(server)
-		.post('/places/1/wings')
-		.send({
-			name: '  '
-		})
-		.end(function(err, res) {
-			should.exist(err);
-			res.should.have.status(500);
-			res.redirects.length.should.eql(0);
-			done();
-		});
-	});
 
   });
 

@@ -28,17 +28,20 @@ queries.getWingAndReviewsById = function(wingId) {
 		  	'places.id AS placeId',
 		  	'reviews.description AS review',
 		  	'reviews.rating AS rating',
-		  	'reviews.id AS review_id'
+		  	'reviews.id AS review_id',
+		  	'users.id AS user_id',
+		  	'users.username AS username'
 		  	)
 		.from('wings')
 		.innerJoin('places', 'places.id', 'wings.place_id')
 		.leftJoin('reviews', 'wings.id', 'reviews.wing_id')
+		.leftJoin('users', 'users.id', 'reviews.user_id')
 		.where('wings.id', wingId);
 }
 
 // create wing
-queries.createWing = function(wingName, placeId) {
-	return knex.insert({name: wingName, place_id: placeId}, 'id')
+queries.createWing = function(wingName, placeId, userId) {
+	return knex.insert({name: wingName, place_id: placeId, user_id: userId}, 'id')
 		.into('wings');
 }
 

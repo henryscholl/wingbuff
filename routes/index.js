@@ -25,8 +25,5 @@ router.get('/user', authHelpers.loginRequired, (req, res, next) => {
 	res.render('user');
 });
 
-function handleResponse(res, code, statusMsg) {
-  res.status(code).json({status: statusMsg});
-}
 
 module.exports = router;

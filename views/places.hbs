@@ -11,9 +11,15 @@
 </div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
-  Add New Place
-</button>
+{{#if currentUser}}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
+      Add New Place
+    </button>
+{{else}}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+      Add New Place
+    </button>
+{{/if}} 
 
 <!-- Modal -->
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel">

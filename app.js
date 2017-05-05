@@ -5,7 +5,9 @@ const express = require('express'),
     methodOverride = require('method-override'),
     session = require('express-session'),
     passport = require('passport'),
-	  hbs = require('express-handlebars');
+	  exphbs = require('express-handlebars');
+
+const handlebars = require('./helpers/handlebars.js')(exphbs);
 
 // *** load environment variables *** //
   require('dotenv').config();
@@ -19,7 +21,7 @@ const authRoutes = require('./routes/auth');
 const app = express();
 
 // view engine setup
-app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts'}));
+app.engine('hbs', handlebars.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 

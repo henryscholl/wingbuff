@@ -3,10 +3,15 @@
 <p class="lead">{{place.address}}, {{place.city}}, {{place.state}}</p>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
-  Add Wing
-</button>
-
+{{#if currentUser}}
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
+	  Add Wing
+	</button>
+{{else}}
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+	  Add Wing
+	</button>
+{{/if}}	
 <hr>
 
 {{#if wings}}

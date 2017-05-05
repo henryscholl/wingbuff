@@ -7,9 +7,15 @@
 
 <br>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
-  Add Review
-</button>
+{{#if currentUser}}
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">
+	  Add Review
+	</button>
+{{else}}
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+	  Add Review
+	</button>
+{{/if}}	
 
 <hr>
 
@@ -19,8 +25,10 @@
 		<div class="well">
 			<p><strong>{{this.username}}</strong>: {{this.review}}</p>
 			<p><strong><span class="badge">Rating: {{this.rating}}</span></strong></p>
-			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}" data-description="{{this.review}}" data-rating="{{this.rating}}">Edit</button>
-			<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}">Delete</button>
+			{{#ifCond ../currentUser.id '==' this.user_id}} 
+				<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}" data-description="{{this.review}}" data-rating="{{this.rating}}">Edit</button>
+				<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" data-place="{{this.placeId}}" data-wing="{{this.wingId}}" data-review="{{this.review_id}}">Delete</button>
+			{{/ifCond}}
 		</div>
 	{{/each}}
 {{else}}

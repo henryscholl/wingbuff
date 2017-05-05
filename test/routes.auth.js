@@ -7,6 +7,7 @@ const server = require('../app');
 const knex = require('../db/connection');
 
 const should = chai.should();
+const expect = chai.expect;
 
 chai.use(chaiHttp);
 passportStub.install(server);
@@ -34,7 +35,7 @@ describe('Auth Routes', function() {
 			})
 			.end((err, res) => {
 				should.not.exist(err);
-				res.redirects.length.should.eql(0);
+				expect(res).to.redirect;
 				res.status.should.eql(200);
 				done();
 			});
@@ -51,7 +52,7 @@ describe('Auth Routes', function() {
 			})
 			.end((err, res) => {
 				should.not.exist(err);
-				res.redirects.length.should.eql(0);
+				expect(res).to.redirect;
 				res.status.should.eql(200);
 				done();
 			});
@@ -83,7 +84,7 @@ describe('Auth Routes', function() {
 			.get('/auth/logout')
 			.end((err, res) => {
 				should.not.exist(err);
-				res.redirects.length.should.eql(0);
+				res.redirects.length.should.eql(1);
 				res.status.should.eql(200);
 				done();
 			});
@@ -91,7 +92,7 @@ describe('Auth Routes', function() {
 	});
 
 	describe('GET /user', () => {
-		it('should return a success', (done) => {
+		it('should access page if logged in', (done) => {
 			passportStub.login({
 				username: 'firstuser',
 				password: 'testpass'
@@ -106,13 +107,13 @@ describe('Auth Routes', function() {
 			});
 		});
 
-		it('should throw an error if user is not logged in', (done) => {
+		it('should redirect if user is not logged in', (done) => {
 			chai.request(server)
 			.get('/user')
 			.end((err, res) => {
-				should.exist(err);
-				res.redirects.length.should.eql(0);
-				res.status.should.eql(401);
+				should.not.exist(err);
+				expect(res).to.redirect;
+				res.status.should.eql(200);
 				done();
 			});
 		});

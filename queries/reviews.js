@@ -3,8 +3,8 @@ const knex = require('../db/connection.js');
 let queries = {};
 
 // create new review
-queries.createReview = function(description, rating, wingId) {
-	return knex.insert({ description: description, rating: rating, wing_id: wingId }, 'wing_id')
+queries.createReview = function(description, rating, wingId, userId) {
+	return knex.insert({ description: description, rating: rating, wing_id: wingId, user_id: userId }, 'wing_id')
 			.into('reviews');
 }
 

@@ -1,6 +1,6 @@
 # Wingbuff
 
-Version 0.5 - Alpha
+v0.5
 
 ## Built with Node, Express, Postgres, and Knex
 
